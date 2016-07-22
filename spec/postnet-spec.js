@@ -31,4 +31,41 @@ describe('postnet', () => {
             });
         });
     });
+    
+    describe('barcode2Zipcode', () => {
+        it('should translate barcode to zipcode', () => {
+            [
+                {
+                    zipcode: '45056-1234',
+                    barcode: '|:|::|:|:|:||::::|:|::||:::::||::|:|::||::|::|||:::|'
+                },
+                {
+                    zipcode: '45056-1234',
+                    barcode: '|:|::|:|:|:||::::|:|::||:::::||::|:|::||::|::|||:::|'
+                },
+                {
+                    zipcode: '45056',
+                    barcode: '|:|::|:|:|:||::::|:|::||::||:::|'
+                }
+            ].forEach((example) => {
+                const result = postnet.barcode2Zipcode(example.barcode);
+                expect(result.success).toBeTruthy();
+                expect(result.value).toEqual(example.zipcode);
+            });
+        });
+
+        it('should validate barcode format', () => {
+            [':|::|:|:|:||::::|:|::||::||:::'].forEach((barcode) => {
+                const result = postnet.barcode2Zipcode(barcode);
+                expect(result.success).toBeFalsy();
+                expect(result.error).toBe('invalid_barcode');
+            });
+        });
+
+        it('should validate zipcode by check digit', () => {
+            const result = postnet.barcode2Zipcode('|:|::|:|:|:||::::|:|::||:::::|||');
+            expect(result.success).toBeFalsy();
+            expect(result.error).toBe('check_digit_not_match');
+        });
+    });
 });
