@@ -8,11 +8,16 @@ function zipcode2Barcode(zipcode) {
     }
 
     const zipcodeWithoutDash = formatZipcode(zipcode);
-    const checkDigit = calculateCheckDigit(zipcodeWithoutDash);
-    var barcode = toBarcode(zipcodeWithoutDash + checkDigit);
+    const zipcodeInDigitArray = toDigitArray(zipcodeWithoutDash);
+    const checkDigit = calculateCheckDigit(zipcodeInDigitArray);
+    var barcode = toBarcode(zipcodeInDigitArray.concat(checkDigit));
     const value = formatBarcode(barcode);
     const success = true;
     return {success, value};
+}
+
+function toDigitArray(barcode) {
+    return barcode.split('').map(c => parseInt(c));
 }
 
 function validateZipcode(zipcode) {
@@ -22,10 +27,7 @@ function validateZipcode(zipcode) {
 }
 
 function calculateCheckDigit(barcode) {
-    const sum = barcode
-        .split('')
-        .map(c => parseInt(c))
-        .reduce((sum, i) => sum + i);
+    const sum = barcode.reduce((sum, i) => sum + i);
 
     return sum % 10 == 0 ? 0 : 10 - sum % 10;
 }
@@ -40,8 +42,7 @@ function toBarcode(zipcode) {
         ':|:|:', ':||::', '|:::|', '|::|:', '|:|::'
     ];
     return zipcode
-        .split('')
-        .map(i => table[parseInt(i)])
+        .map(i => table[i])
         .join('');
 }
 
