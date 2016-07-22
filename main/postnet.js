@@ -10,7 +10,7 @@ function zipcode2Barcode(zipcode) {
     const zipcodeWithoutDash = formatZipcode(zipcode);
     const zipcodeInDigitArray = toDigitArray(zipcodeWithoutDash);
     const checkDigit = calculateCheckDigit(zipcodeInDigitArray);
-    var barcode = toBarcode(zipcodeInDigitArray.concat(checkDigit));
+    const barcode = toBarcode(zipcodeInDigitArray.concat(checkDigit));
     const value = formatBarcode(barcode);
     const success = true;
     return {success, value};
