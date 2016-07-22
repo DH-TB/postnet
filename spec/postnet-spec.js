@@ -24,8 +24,8 @@ describe('postnet', () => {
         });
 
         it('should return false when zipcode not valid', () => {
-            ['456', '45056-123', '45010101001010'].forEach((barcode) => {
-                const result = postnet.zipcode2Barcode(barcode);
+            ['456', '45056-123', '45010101001010'].forEach((zipcode) => {
+                const result = postnet.zipcode2Barcode(zipcode);
                 expect(result.success).toBeFalsy();
                 expect(result.error).toBe('invalid_zipcode');
             });
