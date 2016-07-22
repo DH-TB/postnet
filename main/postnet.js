@@ -1,3 +1,8 @@
+const table = [
+    '||:::', ':::||', '::|:|', '::||:', ':|::|',
+    ':|:|:', ':||::', '|:::|', '|::|:', '|:|::'
+];
+
 function barcode2Zipcode(barcode) {
     if (!validateBarcode(barcode)) {
         return {success: false, error: 'invalid_barcode'};
@@ -25,36 +30,29 @@ function validateCheckDigit(digits) {
 
 function validateBarcode(barcode) {
     const length = barcode.length;
-    return barcode.match(/^\|[:|]+\|$/) && [32, 52, 57].includes(length);
+    return barcode.match(/^\|[:|]+\|$/) && [32, 52].includes(length);
 }
 
 function align(zipcode) {
     if (zipcode.length === 9) {
-        const arr = zipcode.split('');
-        arr.splice(5, 0, '-');
-        return arr.join('');
+        return `${zipcode.slice(0, 5)}-${zipcode.slice(5)}`;
     }
 
     return zipcode;
 }
 
 function toZipcode(digits) {
-   return digits.join('').substr(0, digits.length - 1);
+    return digits.join('').slice(0, -1);
 }
 
 function barcodeToDigits(barcode) {
-    const table = [
-        '||:::', ':::||', '::|:|', '::||:', ':|::|',
-        ':|:|:', ':||::', '|:::|', '|::|:', '|:|::'
-    ];
-
     return barcode
         .match(/.{1,5}/g)
         .map(str => table.indexOf(str));
 }
 
 function removeBorder(barcode) {
-    return barcode.substr(1, barcode.length - 2);
+    return barcode.slice(1, -1);
 }
 
 function zipcode2Barcode(zipcode) {
@@ -89,10 +87,6 @@ function formatZipcode(zipcode) {
 }
 
 function toBarcode(zipcode) {
-    const table = [
-        '||:::', ':::||', '::|:|', '::||:', ':|::|',
-        ':|:|:', ':||::', '|:::|', '|::|:', '|:|::'
-    ];
     return zipcode
         .map(i => table[i])
         .join('');
