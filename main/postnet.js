@@ -1,10 +1,6 @@
-"use strict";
-
 function zipcode2Barcode(zipcode) {
     if (!validateZipcode(zipcode)) {
-        const success = false;
-        const error = 'invalid_zipcode';
-        return {success, error};
+        return {success: false, error: 'invalid_zipcode'};
     }
 
     const zipcodeWithoutDash = formatZipcode(zipcode);
@@ -12,8 +8,7 @@ function zipcode2Barcode(zipcode) {
     const checkDigit = calculateCheckDigit(zipcodeInDigitArray);
     const barcode = toBarcode(zipcodeInDigitArray.concat(checkDigit));
     const value = formatBarcode(barcode);
-    const success = true;
-    return {success, value};
+    return {success: true, value};
 }
 
 function toDigitArray(barcode) {

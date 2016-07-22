@@ -18,15 +18,15 @@ describe('postnet', () => {
                 }
             ].forEach((example) => {
                 const result = postnet.zipcode2Barcode(example.zipcode);
-                expect(result.success).toBe(true);
+                expect(result.success).toBeTruthy();
                 expect(result.value).toEqual(example.barcode);
             });
         });
 
         it('should return false when zipcode not valid', () => {
             ['456', '45056-123', '45010101001010'].forEach((barcode) => {
-                let result = postnet.zipcode2Barcode(barcode);
-                expect(result.success).toBe(false);
+                const result = postnet.zipcode2Barcode(barcode);
+                expect(result.success).toBeFalsy();
                 expect(result.error).toBe('invalid_zipcode');
             });
         });
