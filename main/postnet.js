@@ -22,7 +22,7 @@ function validateZipcode(zipcode) {
 }
 
 function calculateCheckDigit(barcode) {
-    const sum = barcode.reduce((sum, i) => sum + i);
+    const sum = barcode.reduce((a, b) => a + b);
 
     // return sum % 10 == 0 ? 0 : 10 - sum % 10;
     return (10 - sum % 10) % 10;
